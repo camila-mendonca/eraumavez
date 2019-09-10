@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<body>
+
+	<ui:composition template="/resources/template.xhtml">
+		<ui:define name="conteudo">
+
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-sm-offset-3">
+					<p:tabView dynamic="true" cache="true">
+						<p:tab title="Usuário">
+							<ui:include src="${pageContext.request.contextPath}fragmentos/usuario.xhtml" />
+						</p:tab>
+						<p:tab title="Professor">
+							<ui:include src="${pageContext.request.contextPath}fragmentos/professor.xhtml" />
+						</p:tab>
+					</p:tabView>
+					
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html> 
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+	<h:form id="atividadeTurma" styleClass="formulario">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		<div class="form-group">
+			<p:outputLabel for="atividade" value="Atividade"/>
+			<h:selectOneMenu id="atividade" value="#{atividadeTurmaMB.atividadeTurma.atividade}" converter="atividadeConverter" styleClass="form-control">
+				<f:selectItems value="#{atividadeTurmaMB.atividades}" var="atividade" itemValue="#{atividade}" itemLabel="#{atividade.descricao}"/>
+			</h:selectOneMenu>
+			<p:tooltip id="toolTipFade" for="atividade" value="Escolha a atividade que deseja atribuir a sua turma" position="top"/>
+		</div>
+		<div class="form-group">
+			<p:outputLabel for="dataTermino" value="Prazo de Entrega"/>
+			<p:calendar id="dataTermino" value="#{atividadeTurmaMB.atividadeTurma.dataTermino}"/>
+		</div>
+		<p:commandButton action="#{atividadeTurmaMB.atribuir()}" value="Salvar"/>
+	</h:form>
+
+</ui:fragment>

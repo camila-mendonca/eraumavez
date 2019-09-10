@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<body>
+	<ui:composition template="/resources/template.xhtml">
+		<ui:define name="conteudo">
+			<div class="row">
+				<div class="col-xs-12 col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">Dados da atividade</div>
+						<div class="panel-body">
+							<strong><h:outputText value="Descrição: " /></strong>
+							<h:outputText value="#{atividadeMB.atividade.descricao}" />
+							<br /> <strong><h:outputText value="Livro utilizado:" /></strong>
+							<h:outputText value="#{atividadeMB.atividade.livro.titulo}" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+						<h:form id="listaQuestoes">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<p:dataTable var="questao" value="#{atividadeMB.questoes}"
+								emptyMessage="Essa atividade ainda não possui questões" styleClass="table table-striped">
+								<p:column headerText="Numero">
+									<h:outputText value="#{questao.numero}" />
+								</p:column>
+								<p:column headerText="Enunciado">
+									<h:outputText value="#{questao.enunciado}" />
+								</p:column>
+								<p:column>
+									<p:commandButton action="#{questaoMB.excluir()}" value="Excluir" update=":listaQuestoes,:adicionarQuestao">
+										<f:setPropertyActionListener value="#{questao}" target="#{questaoMB.questao}"/>
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</h:form>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+						<h:form id="adicionarQuestao">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<div class="form-group">
+								<p:outputLabel value="Enunciado" for="enunciado" />
+								<p:inputTextarea value="#{questaoMB.questao.enunciado}" id="enunciado" 
+									label="Enunciado" rows="5" maxlength="150"
+									counter="displayEnun" counterTemplate="{0} caracteres sobrando"
+									styleClass="form-control" />
+								<h:outputText id="displayEnun" />
+							</div>
+							<div class="btn-horizontal">
+								<p:commandButton action="#{questaoMB.salvar()}" value="Salvar" update=":listaQuestoes">
+									<f:setPropertyActionListener value="#{atividadeMB.atividade}" target="#{questaoMB.atividade}" />
+								</p:commandButton>
+							</div>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>
