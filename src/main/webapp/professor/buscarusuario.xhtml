@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="buscaUsuario">
+		<p:inputText value="#{usuarioMB.nomeBusca}" required="true" id="nomeBusca" title="Informe o nome do aluno que você deseja encontrar para ser convidado a participar da turma"/>
+		<p:tooltip id="dicaNomeBusca" for="nomeBusca" showEvent="focus" hideEvent="blur" />
+		<input type="hidden" name="${_csrf.parameterName}"
+			value="${_csrf.token}" />
+		<p:commandButton action="#{usuarioMB.buscar()}" value="Buscar"
+			update=":buscaUsuario,:resultadoBusca" oncomplete="PF('buscarUsuario').show()"/>
+	</h:form>
+	<p:dialog header="Resultados da Busca" widgetVar="buscarUsuario" modal="true" showEffect="fade" hideEffect="fade" resizable="false">						
+		<ui:include src="${pageContext.request.contextPath}resultadobusca.xhtml" />					
+	</p:dialog>
+	
+</ui:fragment>

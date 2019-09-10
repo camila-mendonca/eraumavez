@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" >
+
+<body>
+<ui:composition template="/resources/template.xhtml">
+	<ui:define name="conteudo">
+	
+	<div class="row">
+		<div class="col-xs-12 col-sm-6 col-sm-offset-3">
+		<h:panelGroup rendered="#{!empty param.login_error}">
+		<div class="alert alert-danger" role="alert">
+			<strong>Erro ao efetuar login!</strong><br/>
+			Motivo: #{SPRING_SECURITY_LAST_EXCEPTION.message}
+			</div>
+		</h:panelGroup>
+		</div>		
+	</div>
+	
+	<div class="row">
+		<div class="col-xs-12 col-sm-4 col-sm-offset-4">
+			<form id="login_form" method="post" action="#{request.contextPath}/j_spring_security_check" class="formulario">
+				<div class="form-group">
+					<label for="username">Login:</label>
+					<input type="text" name="j_username" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label for="password">Senha:</label>
+					<input type="password" id="password" name="j_password" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<input type="checkbox" name="_spring_security_remember_me"/> Lembre-se de mim
+				</div>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<div class="btn-horizontal">
+					<input type="submit" value="Entrar" class="form-btn btn-txt"/>
+				</div>
+				
+				<div class="form-group">
+				<p>Ainda não possui cadastro? Cadastre-se <a href="#{request.contextPath}/cadastrar.xhtml">aqui!</a></p>
+				</div>
+			</form>
+			
+			
+		</div>
+	</div>
+	
+	<script>
+		$(function () {
+		  var token = $("meta[name='_csrf']").attr("content");
+		  var header = $("meta[name='_csrf_header']").attr("content");
+		  $(document).ajaxSend(function(e, xhr, options) {
+		    xhr.setRequestHeader(header, token);
+		  });
+		});
+	</script>
+	</ui:define>
+</ui:composition>
+</body>
+</html>

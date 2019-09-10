@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+
+	<ui:composition template="/resources/template.xhtml">
+		<ui:define name="conteudo">
+			<div class="row">
+
+				<h:outputText
+					value="Você não pode criar um página sem antes escolher um livro!"
+					rendered="#{paginaMB.livro.titulo==null}" />
+
+				<h:form id="cadastrarpagina"
+					rendered="#{paginaMB.livro.titulo!=null}">
+					<h:outputText value="Livro: #{paginaMB.livro.titulo}" />
+					<br />
+					<div class="col-sm-10 formulario">
+						<div class="col-sm-6">
+							<h:inputHidden value="#{paginaMB.pagina.id}" />
+							<div class="form-group">
+								<h:panelGroup layout="block" rendered="#{paginaMB.ilustracao == null}">
+									<p:inputTextarea value="#{paginaMB.pagina.texto}" label="texto"
+										rows="12" maxlength="970" counter="displayDesc"
+										counterTemplate="{0} caracters sobrando"
+										styleClass="form-control">
+										<p:ajax event="keyup" update="previa" />
+									</p:inputTextarea>
+									<h:outputText id="displayDesc" />
+								</h:panelGroup>
+								<h:panelGroup layout="block" rendered="#{paginaMB.ilustracao != null}">
+									<p:inputTextarea value="#{paginaMB.pagina.texto}" label="texto"
+										rows="12" maxlength="500" counter="displayDescImg"
+										counterTemplate="{0} caracters sobrando"
+										styleClass="form-control">
+										<p:ajax event="keyup" update="previa-img" />
+									</p:inputTextarea>
+									<h:outputText id="displayDescImg" />
+								</h:panelGroup>
+							</div>
+							<div class="btn-horizontal">
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" />
+								<p:commandButton value="Adicionar Ilustração" rendered="#{paginaMB.ilustracao == null}"
+									oncomplete="PF('ilustracoes').show()" styleClass="form-btn" />
+								<p:commandButton value="Remover Ilustração" action="#{paginaMB.removerIlustracao()}" rendered="#{paginaMB.ilustracao != null}" update=":cadastrarpagina" styleClass="form-btn"/>
+								<p:commandButton action="#{paginaMB.salvar}" value="Salvar"
+									styleClass="form-btn" />
+								<p:commandButton action="#{paginaMB.adicionar}"
+									update=":cadastrarpagina" value="Nova Página"
+									styleClass="form-btn" />
+								<p:commandButton action="#{paginaMB.sair}" value="Sair"
+									immediate="true" styleClass="form-btn" />
+							</div>
+						</div>
+
+						<p:dialog header="Adicionar Ilustração" widgetVar="ilustracoes"
+							modal="true" showEffect="fade" hideEffect="fade"
+							resizable="false" closable="true" width="50%">
+							<p:outputPanel id="adicionar">
+								<ui:include
+									src="${pageContext.request.contextPath}listailustracoes.xhtml" />
+								<script type="text/javascript">
+									function handleUpdate(xhr,status,args){
+										if(args.sucesso){
+											PF('ilustracoes').hide();
+										}
+									}
+								</script>
+							</p:outputPanel>
+						</p:dialog>
+						
+						
+						<div class="col-sm-6">
+							Veja como sua página ficará no livro!
+							<h:panelGroup layout="block" rendered="#{paginaMB.ilustracao == null}">
+								<div class="pg-previa">
+									<h:outputText id="previa" value="#{paginaMB.pagina.texto}"/>
+								</div>
+							</h:panelGroup>
+							<h:panelGroup layout="block" rendered="#{paginaMB.ilustracao != null}">
+								Com Ilustração
+								<div class="pg-previa">
+									<h:panelGroup layout="block" id="previa-img">
+										#{paginaMB.pagina.texto}
+									</h:panelGroup>
+									
+									<h:graphicImage value="#{paginaMB.caminhoIlustracao}" />
+								</div>
+							</h:panelGroup>
+							
+						</div>
+					</div>
+				</h:form>
+			</div>
+
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>
